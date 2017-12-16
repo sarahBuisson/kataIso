@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
@@ -28,7 +29,8 @@ public class IsoContest {
         SuperScanner sc = new SuperScanner(scanner);
 
 
-        sc.nextInts(" ");
+        int val = sc.nextInts(" ").get(0);
+
 
 
         List<String> solution = new ArrayList<>();
@@ -116,7 +118,7 @@ public class IsoContest {
         public Map<Point, T> all() {
             HashMap<Point, T> ret = new HashMap<>();
             for (int j = 0; j < kases.size(); j++)
-                for (int i = 0; i < kases.get(i).size(); i++) {
+                for (int i = 0; i < kases.get(j).size(); i++) {
                     ret.put(new Point(i, j), get(i, j));
 
                 }
@@ -222,7 +224,7 @@ public class IsoContest {
         List<String> savedLine = new ArrayList<>();
 
         private void saveLine(String s) {
-            if (savedLine.size() < 30)
+            if (savedLine.size() < 130)
                 savedLine.add(s);
         }
 
