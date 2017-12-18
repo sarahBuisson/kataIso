@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -54,6 +56,17 @@ public class IsoContest {
         /* Vous pouvez aussi effectuer votre traitement une fois que vous avez lu toutes les données.*/
     }
 
+
+    public static String binC(String s) {
+        String str = "";
+
+        for (int i = 0; i < s.length() / 8; i++) {
+
+            int a = Integer.parseInt(s.substring(8 * i, (i + 1) * 8), 2);
+            str += (char) (a);
+        }
+        return str;
+    }
 
     public static void main(String[] argv) throws Exception {
 
@@ -473,5 +486,51 @@ public class IsoContest {
         }
     }
 
+
+
+    public static class BiKeyMap<K, V> {
+        Map<K, Map<K, V>> map = new HashMap<>();
+
+        public BiKeyMap() {
+
+        }
+
+        public V get(K key1, K key2) {
+            Map<K, V> map2 = map.get(key1);
+            return map2 != null ? map2.get(key2) : null;
+        }
+
+        public Collection<V> get1(K key1) {
+            return map.get(key1).values();
+
+        }
+
+        public Collection<V> get2(K key2) {
+            return map.values().stream().map(m2 -> m2.get(key2)).collect(Collectors.toList());
+        }
+
+        public V put(K key1, K key2, V value) {
+            Map<K, V> map2 = map.get(key1);
+            if (map2 == null) {
+                map2 = new HashMap<>();
+                map.put(key1, map2);
+            }
+            return map2.put(key2, value);
+        }
+
+
+        public V remove(K key1, K key2) {
+            Map<K, V> map2 = map.get(key1);
+            if (map2 == null) {
+                map2 = new HashMap<>();
+                map.put(key1, map2);
+            }
+            return map2.remove(key2);
+        }
+
+        public Collection<V> values() {
+            return map.values().stream().flatMap((Map<K, V> m2) -> m2.values().stream()).filter(i -> i != null).collect(Collectors.toList());
+        }
+    }
 
 }
