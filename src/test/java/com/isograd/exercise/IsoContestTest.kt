@@ -1,17 +1,22 @@
-package com.isograd.exercise;
+package com.isograd.exercise
 
+import kotlin.Throws
+import java.lang.ClassNotFoundException
+import java.lang.reflect.InvocationTargetException
+import java.lang.NoSuchMethodException
+import java.lang.IllegalAccessException
+import java.io.IOException
+import com.isograd.exercise.TestUtils
+import org.junit.Test
+import java.nio.file.Path
+import java.nio.file.Files
+import java.io.FileOutputStream
+import java.io.PrintStream
 
-import org.junit.Test;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
-public class IsoContestTest {
-
-
+class IsoContestTest {
     @Test
-    public void testMain() throws ClassNotFoundException, NoSuchMethodException, IOException, IllegalAccessException, InvocationTargetException {
-
-        TestUtils.runTests(this.getClass());
+    @Throws(ClassNotFoundException::class, NoSuchMethodException::class, IOException::class, IllegalAccessException::class, InvocationTargetException::class)
+    fun testMain() {
+        TestUtils.runTests(this.javaClass)
     }
 }

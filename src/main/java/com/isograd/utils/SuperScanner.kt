@@ -1,264 +1,256 @@
-package com.isograd.utils;
+package com.isograd.utils
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.regex.MatchResult;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import java.util.function.BiFunction
+import java.util.stream.Collectors
+import java.io.IOException
+import java.math.BigInteger
+import java.math.BigDecimal
+import java.util.*
+import java.util.function.Consumer
+import java.util.regex.MatchResult
+import java.util.regex.Pattern
 
-public class SuperScanner {
-    Scanner scanner;
-    List<String> savedLine=new ArrayList<>();
-
-    private void saveLine(String s){
-        if(savedLine.size()<30)
-        savedLine.add(s);
+class SuperScanner(var scanner: Scanner) {
+    var savedLine: MutableList<String> = ArrayList()
+    private fun saveLine(s: String) {
+        if (savedLine.size < 30) savedLine.add(s)
     }
 
-
-    public SuperScanner(Scanner scanner) {
-        this.scanner = scanner;
+    fun nextInts(separator: String): List<Int> {
+        return Arrays.asList(*nextLine().split(separator.toRegex()).toTypedArray()).stream().map { i: String -> i.trim { it <= ' ' }.toInt() }.collect(Collectors.toList())
     }
 
-    public List<Integer> nextInts(String separator){
-        return Arrays.asList(nextLine().split(separator)).stream().map(i->Integer.parseInt(i.trim())).collect(Collectors.toList());
+    fun nextStrings(separator: String): List<String> {
+        return Arrays.asList(*nextLine().split(separator.toRegex()).toTypedArray())
     }
 
-    public List<String> nextStrings(String separator){
-        return Arrays.asList(nextLine().split(separator));
-    }
-
-    public List<Character> nextChars() {
-        List<Character> list = new ArrayList<Character>();
-        for (char c : nextLine().toCharArray()) {
-            list.add(c);
+    fun nextChars(): List<Char> {
+        val list: MutableList<Char> = ArrayList()
+        for (c in nextLine().toCharArray()) {
+            list.add(c)
         }
-        return list;
+        return list
     }
 
-    public void close() {
-        scanner.close();
+    fun close() {
+        scanner.close()
     }
 
-    public IOException ioException() {
-        return scanner.ioException();
+    fun ioException(): IOException {
+        return scanner.ioException()
     }
 
-    public Pattern delimiter() {
-        return scanner.delimiter();
+    fun delimiter(): Pattern {
+        return scanner.delimiter()
     }
 
-    public Scanner useDelimiter(Pattern pattern) {
-        return scanner.useDelimiter(pattern);
+    fun useDelimiter(pattern: Pattern?): Scanner {
+        return scanner.useDelimiter(pattern)
     }
 
-    public Scanner useDelimiter(String pattern) {
-        return scanner.useDelimiter(pattern);
+    fun useDelimiter(pattern: String?): Scanner {
+        return scanner.useDelimiter(pattern)
     }
 
-    public Locale locale() {
-        return scanner.locale();
+    fun locale(): Locale {
+        return scanner.locale()
     }
 
-    public Scanner useLocale(Locale locale) {
-        return scanner.useLocale(locale);
+    fun useLocale(locale: Locale?): Scanner {
+        return scanner.useLocale(locale)
     }
 
-    public int radix() {
-        return scanner.radix();
+    fun radix(): Int {
+        return scanner.radix()
     }
 
-    public Scanner useRadix(int radix) {
-        return scanner.useRadix(radix);
+    fun useRadix(radix: Int): Scanner {
+        return scanner.useRadix(radix)
     }
 
-    public MatchResult match() {
-        return scanner.match();
+    fun match(): MatchResult {
+        return scanner.match()
     }
 
-    public boolean hasNext() {
-        return scanner.hasNext();
+    operator fun hasNext(): Boolean {
+        return scanner.hasNext()
     }
 
-    public String next() {
-        return scanner.next();
+    operator fun next(): String {
+        return scanner.next()
     }
 
-    public void remove() {
-        scanner.remove();
+    fun remove() {
+        scanner.remove()
     }
 
-    public boolean hasNext(String pattern) {
-        return scanner.hasNext(pattern);
+    fun hasNext(pattern: String?): Boolean {
+        return scanner.hasNext(pattern)
     }
 
-    public String next(String pattern) {
-        return scanner.next(pattern);
+    fun next(pattern: String?): String {
+        return scanner.next(pattern)
     }
 
-    public boolean hasNext(Pattern pattern) {
-        return scanner.hasNext(pattern);
+    fun hasNext(pattern: Pattern?): Boolean {
+        return scanner.hasNext(pattern)
     }
 
-    public String next(Pattern pattern) {
-        return scanner.next(pattern);
+    fun next(pattern: Pattern?): String {
+        return scanner.next(pattern)
     }
 
-    public boolean hasNextLine() {
-        return scanner.hasNextLine();
+    fun hasNextLine(): Boolean {
+        return scanner.hasNextLine()
     }
 
-    public String nextLine() {
-
-        String s= scanner.nextLine();
-        saveLine(s);
-        return s;
+    fun nextLine(): String {
+        val s = scanner.nextLine()
+        saveLine(s)
+        return s
     }
 
-    public String findInLine(String pattern) {
-        return scanner.findInLine(pattern);
+    fun findInLine(pattern: String?): String {
+        return scanner.findInLine(pattern)
     }
 
-    public String findInLine(Pattern pattern) {
-        return scanner.findInLine(pattern);
+    fun findInLine(pattern: Pattern?): String {
+        return scanner.findInLine(pattern)
     }
 
-    public String findWithinHorizon(String pattern, int horizon) {
-        return scanner.findWithinHorizon(pattern, horizon);
+    fun findWithinHorizon(pattern: String?, horizon: Int): String {
+        return scanner.findWithinHorizon(pattern, horizon)
     }
 
-    public String findWithinHorizon(Pattern pattern, int horizon) {
-        return scanner.findWithinHorizon(pattern, horizon);
+    fun findWithinHorizon(pattern: Pattern?, horizon: Int): String {
+        return scanner.findWithinHorizon(pattern, horizon)
     }
 
-    public Scanner skip(Pattern pattern) {
-        return scanner.skip(pattern);
+    fun skip(pattern: Pattern?): Scanner {
+        return scanner.skip(pattern)
     }
 
-    public Scanner skip(String pattern) {
-        return scanner.skip(pattern);
+    fun skip(pattern: String?): Scanner {
+        return scanner.skip(pattern)
     }
 
-    public boolean hasNextBoolean() {
-        return scanner.hasNextBoolean();
+    fun hasNextBoolean(): Boolean {
+        return scanner.hasNextBoolean()
     }
 
-    public boolean nextBoolean() {
-        return scanner.nextBoolean();
+    fun nextBoolean(): Boolean {
+        return scanner.nextBoolean()
     }
 
-    public boolean hasNextByte() {
-        return scanner.hasNextByte();
+    fun hasNextByte(): Boolean {
+        return scanner.hasNextByte()
     }
 
-    public boolean hasNextByte(int radix) {
-        return scanner.hasNextByte(radix);
+    fun hasNextByte(radix: Int): Boolean {
+        return scanner.hasNextByte(radix)
     }
 
-    public byte nextByte() {
-        return scanner.nextByte();
+    fun nextByte(): Byte {
+        return scanner.nextByte()
     }
 
-    public byte nextByte(int radix) {
-        return scanner.nextByte(radix);
+    fun nextByte(radix: Int): Byte {
+        return scanner.nextByte(radix)
     }
 
-    public boolean hasNextShort() {
-        return scanner.hasNextShort();
+    fun hasNextShort(): Boolean {
+        return scanner.hasNextShort()
     }
 
-    public boolean hasNextShort(int radix) {
-        return scanner.hasNextShort(radix);
+    fun hasNextShort(radix: Int): Boolean {
+        return scanner.hasNextShort(radix)
     }
 
-    public short nextShort() {
-        return scanner.nextShort();
+    fun nextShort(): Short {
+        return scanner.nextShort()
     }
 
-    public short nextShort(int radix) {
-        return scanner.nextShort(radix);
+    fun nextShort(radix: Int): Short {
+        return scanner.nextShort(radix)
     }
 
-    public boolean hasNextInt() {
-        return scanner.hasNextInt();
+    fun hasNextInt(): Boolean {
+        return scanner.hasNextInt()
     }
 
-    public boolean hasNextInt(int radix) {
-        return scanner.hasNextInt(radix);
+    fun hasNextInt(radix: Int): Boolean {
+        return scanner.hasNextInt(radix)
     }
 
-    public int nextInt() {
-        return scanner.nextInt();
+    fun nextInt(): Int {
+        return scanner.nextInt()
     }
 
-    public int nextInt(int radix) {
-        return scanner.nextInt(radix);
+    fun nextInt(radix: Int): Int {
+        return scanner.nextInt(radix)
     }
 
-    public boolean hasNextLong() {
-        return scanner.hasNextLong();
+    fun hasNextLong(): Boolean {
+        return scanner.hasNextLong()
     }
 
-    public boolean hasNextLong(int radix) {
-        return scanner.hasNextLong(radix);
+    fun hasNextLong(radix: Int): Boolean {
+        return scanner.hasNextLong(radix)
     }
 
-    public long nextLong() {
-        return scanner.nextLong();
+    fun nextLong(): Long {
+        return scanner.nextLong()
     }
 
-    public long nextLong(int radix) {
-        return scanner.nextLong(radix);
+    fun nextLong(radix: Int): Long {
+        return scanner.nextLong(radix)
     }
 
-    public boolean hasNextFloat() {
-        return scanner.hasNextFloat();
+    fun hasNextFloat(): Boolean {
+        return scanner.hasNextFloat()
     }
 
-    public float nextFloat() {
-        return scanner.nextFloat();
+    fun nextFloat(): Float {
+        return scanner.nextFloat()
     }
 
-    public boolean hasNextDouble() {
-        return scanner.hasNextDouble();
+    fun hasNextDouble(): Boolean {
+        return scanner.hasNextDouble()
     }
 
-    public double nextDouble() {
-        return scanner.nextDouble();
+    fun nextDouble(): Double {
+        return scanner.nextDouble()
     }
 
-    public boolean hasNextBigInteger() {
-        return scanner.hasNextBigInteger();
+    fun hasNextBigInteger(): Boolean {
+        return scanner.hasNextBigInteger()
     }
 
-    public boolean hasNextBigInteger(int radix) {
-        return scanner.hasNextBigInteger(radix);
+    fun hasNextBigInteger(radix: Int): Boolean {
+        return scanner.hasNextBigInteger(radix)
     }
 
-    public BigInteger nextBigInteger() {
-        return scanner.nextBigInteger();
+    fun nextBigInteger(): BigInteger {
+        return scanner.nextBigInteger()
     }
 
-    public BigInteger nextBigInteger(int radix) {
-        return scanner.nextBigInteger(radix);
+    fun nextBigInteger(radix: Int): BigInteger {
+        return scanner.nextBigInteger(radix)
     }
 
-    public boolean hasNextBigDecimal() {
-        return scanner.hasNextBigDecimal();
+    fun hasNextBigDecimal(): Boolean {
+        return scanner.hasNextBigDecimal()
     }
 
-    public BigDecimal nextBigDecimal() {
-        return scanner.nextBigDecimal();
+    fun nextBigDecimal(): BigDecimal {
+        return scanner.nextBigDecimal()
     }
 
-    public Scanner reset() {
-        return scanner.reset();
+    fun reset(): Scanner {
+        return scanner.reset()
     }
 
-    public void forEachRemaining(Consumer<? super String> action) {
-        scanner.forEachRemaining(action);
+    fun forEachRemaining(action: Consumer<in String?>) {
+        scanner.forEachRemaining(action)
     }
 }

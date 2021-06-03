@@ -2,140 +2,99 @@
  * Read input from System.in
  * Use System.out.println to ouput your result.
  * Use:
- *  IsoContestBase.localEcho( variable)
+ * IsoContestBase.localEcho( variable)
  * to display variable in a dedicated area.
- * ***/
-package com.isograd.exercise;
+ */
+package com.isograd.exercise
 
+import java.util.function.BiFunction
+import java.util.stream.Collectors
+import java.io.IOException
+import java.math.BigInteger
+import java.math.BigDecimal
+import kotlin.Throws
+import java.awt.Point
+import kotlin.jvm.JvmStatic
+import java.io.PrintStream
+import java.lang.Exception
+import java.util.*
+import java.util.function.Consumer
+import java.util.regex.MatchResult
+import java.util.regex.Pattern
 
-import java.awt.*;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.DateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
-import java.util.regex.MatchResult;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-public class IsoContest {
-
-
-    public static void mainContent(Scanner scanner) throws Exception {
-        SuperScanner sc = new SuperScanner(scanner);
-
-
-        int val = sc.nextInts(" ").get(0);
-
-
-
-        List<String> solution = new ArrayList<>();
+class IsoContest {
+    @Throws(Exception::class)
+    fun mainContent(scanner: Scanner) {
+        println("errr")
+        val sc = SuperScanner(scanner)
+        val `val` = sc.nextInts(" ")[0]
+        val solution: List<String> = ArrayList()
         while (sc.hasNextLine()) {
-            List<Integer> vals = sc.nextInts(" ");
+            val vals = sc.nextInts(" ")
             //List<Integer> vals = sc.nextStrings(" ");
-
-
         }
-
+        println("errrr")
 
         //if(solu.size()>1)
         //  sout(String.join("\n",sc.savedLine));
-
-        sout("noSolYet");
-       // sout((String.join(" ",solution));
+        sout("noSolYet")
+        // sout((String.join(" ",solution));
         //for(String solution:solution)
-          //  sout(solution);
+        //  sout(solution);
 
         //        sout(String.join(" ",best));
         /* Vous pouvez aussi effectuer votre traitement une fois que vous avez lu toutes les données.*/
     }
 
-
-    public static String binC(String s) {
-        String str = "";
-
-        for (int i = 0; i < s.length() / 8; i++) {
-
-            int a = Integer.parseInt(s.substring(8 * i, (i + 1) * 8), 2);
-            str += (char) (a);
+    fun binC(s: String): String {
+        var str = ""
+        for (i in 0 until s.length / 8) {
+            val a = s.substring(8 * i, (i + 1) * 8).toInt(2)
+            str += a.toChar()
         }
-        return str;
-    }
-
-    public static void main(String[] argv) throws Exception {
-
-        Scanner sc = new Scanner(System.in);
-        mainContent(sc);
-
-
-    }
-
-    public static void sout(Object message) {
-        if (debug)
-            System.out.println("sout" + message);
-        out.println(message);
-
-    }
-
-    public static void soutn(Object message) {
-        if (debug)
-            System.out.println("sout" + message);
-        out.print(message);
-
-    }
-
-    public static void log(Object message) {
-
-        if (debug)
-            System.out.println("log" + message.toString());
-
-    }
-
-    public static boolean debug = false;
-
-    public static PrintStream out = System.out;
-
-    public static void initDebug(PrintStream outs) {
-        debug = true;
-        out = outs;
-
+        return str
     }
 
 
-    public static class Board<T> {
+    fun sout(message: Any) {
+        if (debug) println("sout$message")
+        out.println(message)
+    }
 
-        public final List<List<T>> kases = new ArrayList<>();
+    fun soutn(message: Any) {
+        if (debug) println("sout$message")
+        out.print(message)
+    }
 
-        public Board() {
-        }
+    fun log(message: Any) {
+        if (debug) println("log$message")
+    }
 
-        public Board(int width, int height, T deff) {
+    var debug = true
+    var out = System.out
+    fun initDebug(outs: PrintStream) {
+        debug = true
+        out = outs
+    }
 
+    class Board<T> {
+        val kases: MutableList<MutableList<T>> = ArrayList()
 
-            for (int i = 0; i < width; i++) {
-                ArrayList<T> line = new ArrayList<>();
-                kases.add(line);
-                for (int j = 0; j < height; j++)
-                    line.add(deff);
+        constructor() {}
+        constructor(width: Int, height: Int, deff: T) {
+            for (i in 0 until width) {
+                val line = ArrayList<T>()
+                kases.add(line)
+                for (j in 0 until height) line.add(deff)
             }
-
-
         }
 
-        public Map<Point, T> all() {
-            HashMap<Point, T> ret = new HashMap<>();
-            for (int j = 0; j < kases.size(); j++)
-                for (int i = 0; i < kases.get(j).size(); i++) {
-                    ret.put(new Point(i, j), get(i, j));
-
-                }
-            return ret;
+        fun all(): Map<Point, T> {
+            val ret = HashMap<Point, T>()
+            for (j in kases.indices) for (i in kases[j].indices) {
+                ret[Point(i, j)] = get(i, j)
+            }
+            return ret
         }
 
         /**
@@ -145,392 +104,365 @@ public class IsoContest {
          * @param isNei
          * @return
          */
-        public Map<Point, T> absNeighbourOf(final Point p, BiFunction<Point, Point, Boolean> isNei) {
-
-            HashMap<Point, T> ret = new HashMap<>();
-            for (int j = 0; j < kases.size(); j++)
-                for (int i = 0; i < kases.get(j).size(); i++) {
-                    if (isNei.apply(p, new Point(i, j)))
-                        ret.put(new Point(i, j), get(i, j));
-
-                }
-            return ret;
+        fun absNeighbourOf(p: Point?, isNei: BiFunction<Point?, Point?, Boolean>): Map<Point, T> {
+            val ret = HashMap<Point, T>()
+            for (j in kases.indices) for (i in kases[j].indices) {
+                if (isNei.apply(p, Point(i, j))) ret[Point(i, j)] = get(i, j)
+            }
+            return ret
         }
 
-        public Board<Integer> labSolution(BiFunction<Point, T, Boolean> canPass, BiFunction<Point, T, Boolean> isDepart, BiFunction<Point, Point, Boolean> isNei) {
-            Board<Integer> solution = new Board<Integer>(this.kases.size(), this.kases.get(0).size(), null);
-            boolean change = true;
+        fun labSolution(canPass: BiFunction<Point?, T, Boolean>, isDepart: BiFunction<Point?, T, Boolean>, isNei: BiFunction<Point?, Point?, Boolean>): Board<Int?> {
+            val solution = Board<Int?>(kases.size, kases[0].size, null)
+            var change = true
             while (change) {
-                change = false;
-                for (int j = 0; j < kases.size(); j++)
-                    for (int i = 0; i < kases.get(j).size(); i++) {
-                        Point p = new Point(i, j);
-                        if (isDepart.apply(p, get(p))) {
-                            solution.set(p, 0);
-                            for (Map.Entry<Point, T> e : absNeighbourOf(p, isNei).entrySet()) {
-                                if (canPass.apply(e.getKey(), e.getValue()))
-                                    if (solution.get(e.getKey()) == null || solution.get(e.getKey()) > 1) {
-                                        solution.set(e.getKey(), 1);
-                                        change = true;
-                                    }
-                            }
-
-
-                        }
-                        if (canPass.apply(p, get(p)) && solution.get(p) != null) {
-                            Integer newVal = solution.get(p) + 1;
-                            for (Map.Entry<Point, T> e : absNeighbourOf(p, isNei).entrySet()) {
-                                if (canPass.apply(e.getKey(), e.getValue()))
-                                    if (solution.get(e.getKey()) == null || solution.get(e.getKey()) > newVal) {
-                                        solution.set(e.getKey(), newVal);
-                                        change = true;
-                                    }
+                change = false
+                for (j in kases.indices) for (i in kases[j].indices) {
+                    val p = Point(i, j)
+                    if (isDepart.apply(p, get(p))) {
+                        solution[p] = 0
+                        for ((key, value) in absNeighbourOf(p, isNei)) {
+                            if (canPass.apply(key, value)) if (solution[key] == null || solution[key]!! > 1) {
+                                solution[key] = 1
+                                change = true
                             }
                         }
                     }
+                    if (canPass.apply(p, get(p)) && solution[p] != null) {
+                        val newVal = solution[p]!! + 1
+                        for ((key, value) in absNeighbourOf(p, isNei)) {
+                            if (canPass.apply(key, value)) if (solution[key] == null || solution[key]!! > newVal) {
+                                solution[key] = newVal
+                                change = true
+                            }
+                        }
+                    }
+                }
             }
-            return solution;
+            return solution
         }
 
-
-        public T get(Point p) {
-            return kases.get(p.y).get(p.x);
+        operator fun get(p: Point): T {
+            return kases[p.y][p.x]
         }
 
-        public T get(int x, int y) {
-            return kases.get(y).get(x);
+        operator fun get(x: Int, y: Int): T {
+            return kases[y][x]
         }
 
-        public void set(Point p, T val) {
-            set(p.x, p.y, val);
+        operator fun set(p: Point, `val`: T) {
+            set(p.x, p.y, `val`)
         }
 
-        public void set(int x, int y, T val) {
-            kases.get(y).set(x, val);
+        operator fun set(x: Int, y: Int, `val`: T) {
+            kases[y][x] = `val`
         }
 
-        public static BiFunction<Point, Point, Boolean> isFullNeighboor = new BiFunction<Point, Point, Boolean>() {
-            @Override
-            public Boolean apply(Point point, Point point2) {
-                return point.distance(point2) < 2;
-            }
-        };
-        public static BiFunction<Point, Point, Boolean> isCrossNeighboor = new BiFunction<Point, Point, Boolean>() {
-            @Override
-            public Boolean apply(Point point, Point point2) {
-                return point.distance(point2) <= 1;
-            }
-        };
-
-        public String toString() {
-            return toString(";");
+        override fun toString(): String {
+            return toString(";")
         }
 
-        public String toString(String separator) {
-            return String.join("\n",
-                    kases.stream().map(i -> String.join(separator, i != null ? i.stream().map(i2 -> i2 != null ? i2.toString() : " ").collect(Collectors.toList()) : new ArrayList<>())).collect(Collectors.toList()));
+        fun toString(separator: String?): String {
+            return java.lang.String.join("\n",
+                    kases.stream().map { i: List<T>? ->
+                        java.lang.String.join(separator, if (i != null) i.stream().map { i2: T? ->
+                            i2?.toString() ?: " "
+                        }.collect(Collectors.toList()) else ArrayList())
+                    }.collect(Collectors.toList()))
+        }
+
+        companion object {
+            var isFullNeighboor: BiFunction<Point, Point, Boolean> = BiFunction { point, point2 -> point.distance(point2) < 2 }
+            var isCrossNeighboor: BiFunction<Point, Point, Boolean> = BiFunction { point, point2 -> point.distance(point2) <= 1 }
         }
     }
 
-    public static class SuperScanner {
-        Scanner scanner;
-        List<String> savedLine = new ArrayList<>();
-
-        private void saveLine(String s) {
-            if (savedLine.size() < 130)
-                savedLine.add(s);
+    class SuperScanner(var scanner: Scanner) {
+        var savedLine: MutableList<String> = ArrayList()
+        private fun saveLine(s: String) {
+            if (savedLine.size < 130) savedLine.add(s)
         }
 
-
-        public SuperScanner(Scanner scanner) {
-            this.scanner = scanner;
+        fun nextInts(separator: String): List<Int> {
+            return Arrays.asList(*nextLine().split(separator.toRegex()).toTypedArray()).stream().map { i: String -> i.trim { it <= ' ' }.toInt() }.collect(Collectors.toList())
         }
 
-        public List<Integer> nextInts(String separator) {
-            return Arrays.asList(nextLine().split(separator)).stream().map(i -> Integer.parseInt(i.trim())).collect(Collectors.toList());
+        fun nextStrings(separator: String): List<String> {
+            return Arrays.asList(*nextLine().split(separator.toRegex()).toTypedArray())
         }
 
-        public List<String> nextStrings(String separator) {
-            return Arrays.asList(nextLine().split(separator));
-        }
-
-        public List<Character> nextChars() {
-            List<Character> list = new ArrayList<Character>();
-            for (char c : nextLine().toCharArray()) {
-                list.add(c);
+        fun nextChars(): List<Char> {
+            val list: MutableList<Char> = ArrayList()
+            for (c in nextLine().toCharArray()) {
+                list.add(c)
             }
-            return list;
+            return list
         }
 
-        public void close() {
-            scanner.close();
+        fun close() {
+            scanner.close()
         }
 
-        public IOException ioException() {
-            return scanner.ioException();
+        fun ioException(): IOException {
+            return scanner.ioException()
         }
 
-        public Pattern delimiter() {
-            return scanner.delimiter();
+        fun delimiter(): Pattern {
+            return scanner.delimiter()
         }
 
-        public Scanner useDelimiter(Pattern pattern) {
-            return scanner.useDelimiter(pattern);
+        fun useDelimiter(pattern: Pattern?): Scanner {
+            return scanner.useDelimiter(pattern)
         }
 
-        public Scanner useDelimiter(String pattern) {
-            return scanner.useDelimiter(pattern);
+        fun useDelimiter(pattern: String?): Scanner {
+            return scanner.useDelimiter(pattern)
         }
 
-        public Locale locale() {
-            return scanner.locale();
+        fun locale(): Locale {
+            return scanner.locale()
         }
 
-        public Scanner useLocale(Locale locale) {
-            return scanner.useLocale(locale);
+        fun useLocale(locale: Locale?): Scanner {
+            return scanner.useLocale(locale)
         }
 
-        public int radix() {
-            return scanner.radix();
+        fun radix(): Int {
+            return scanner.radix()
         }
 
-        public Scanner useRadix(int radix) {
-            return scanner.useRadix(radix);
+        fun useRadix(radix: Int): Scanner {
+            return scanner.useRadix(radix)
         }
 
-        public MatchResult match() {
-            return scanner.match();
+        fun match(): MatchResult {
+            return scanner.match()
         }
 
-        public boolean hasNext() {
-            return scanner.hasNext();
+        operator fun hasNext(): Boolean {
+            return scanner.hasNext()
         }
 
-        public String next() {
-            return scanner.next();
+        operator fun next(): String {
+            return scanner.next()
         }
 
-        public void remove() {
-            scanner.remove();
+        fun remove() {
+            scanner.remove()
         }
 
-        public boolean hasNext(String pattern) {
-            return scanner.hasNext(pattern);
+        fun hasNext(pattern: String?): Boolean {
+            return scanner.hasNext(pattern)
         }
 
-        public String next(String pattern) {
-            return scanner.next(pattern);
+        fun next(pattern: String?): String {
+            return scanner.next(pattern)
         }
 
-        public boolean hasNext(Pattern pattern) {
-            return scanner.hasNext(pattern);
+        fun hasNext(pattern: Pattern?): Boolean {
+            return scanner.hasNext(pattern)
         }
 
-        public String next(Pattern pattern) {
-            return scanner.next(pattern);
+        fun next(pattern: Pattern?): String {
+            return scanner.next(pattern)
         }
 
-        public boolean hasNextLine() {
-            return scanner.hasNextLine();
+        fun hasNextLine(): Boolean {
+            return scanner.hasNextLine()
         }
 
-        public String nextLine() {
-
-            String s = scanner.nextLine();
-            saveLine(s);
-            return s;
+        fun nextLine(): String {
+            val s = scanner.nextLine()
+            saveLine(s)
+            return s
         }
 
-        public String findInLine(String pattern) {
-            return scanner.findInLine(pattern);
+        fun findInLine(pattern: String?): String {
+            return scanner.findInLine(pattern)
         }
 
-        public String findInLine(Pattern pattern) {
-            return scanner.findInLine(pattern);
+        fun findInLine(pattern: Pattern?): String {
+            return scanner.findInLine(pattern)
         }
 
-        public String findWithinHorizon(String pattern, int horizon) {
-            return scanner.findWithinHorizon(pattern, horizon);
+        fun findWithinHorizon(pattern: String?, horizon: Int): String {
+            return scanner.findWithinHorizon(pattern, horizon)
         }
 
-        public String findWithinHorizon(Pattern pattern, int horizon) {
-            return scanner.findWithinHorizon(pattern, horizon);
+        fun findWithinHorizon(pattern: Pattern?, horizon: Int): String {
+            return scanner.findWithinHorizon(pattern, horizon)
         }
 
-        public Scanner skip(Pattern pattern) {
-            return scanner.skip(pattern);
+        fun skip(pattern: Pattern?): Scanner {
+            return scanner.skip(pattern)
         }
 
-        public Scanner skip(String pattern) {
-            return scanner.skip(pattern);
+        fun skip(pattern: String?): Scanner {
+            return scanner.skip(pattern)
         }
 
-        public boolean hasNextBoolean() {
-            return scanner.hasNextBoolean();
+        fun hasNextBoolean(): Boolean {
+            return scanner.hasNextBoolean()
         }
 
-        public boolean nextBoolean() {
-            return scanner.nextBoolean();
+        fun nextBoolean(): Boolean {
+            return scanner.nextBoolean()
         }
 
-        public boolean hasNextByte() {
-            return scanner.hasNextByte();
+        fun hasNextByte(): Boolean {
+            return scanner.hasNextByte()
         }
 
-        public boolean hasNextByte(int radix) {
-            return scanner.hasNextByte(radix);
+        fun hasNextByte(radix: Int): Boolean {
+            return scanner.hasNextByte(radix)
         }
 
-        public byte nextByte() {
-            return scanner.nextByte();
+        fun nextByte(): Byte {
+            return scanner.nextByte()
         }
 
-        public byte nextByte(int radix) {
-            return scanner.nextByte(radix);
+        fun nextByte(radix: Int): Byte {
+            return scanner.nextByte(radix)
         }
 
-        public boolean hasNextShort() {
-            return scanner.hasNextShort();
+        fun hasNextShort(): Boolean {
+            return scanner.hasNextShort()
         }
 
-        public boolean hasNextShort(int radix) {
-            return scanner.hasNextShort(radix);
+        fun hasNextShort(radix: Int): Boolean {
+            return scanner.hasNextShort(radix)
         }
 
-        public short nextShort() {
-            return scanner.nextShort();
+        fun nextShort(): Short {
+            return scanner.nextShort()
         }
 
-        public short nextShort(int radix) {
-            return scanner.nextShort(radix);
+        fun nextShort(radix: Int): Short {
+            return scanner.nextShort(radix)
         }
 
-        public boolean hasNextInt() {
-            return scanner.hasNextInt();
+        fun hasNextInt(): Boolean {
+            return scanner.hasNextInt()
         }
 
-        public boolean hasNextInt(int radix) {
-            return scanner.hasNextInt(radix);
+        fun hasNextInt(radix: Int): Boolean {
+            return scanner.hasNextInt(radix)
         }
 
-        public int nextInt() {
-            return scanner.nextInt();
+        fun nextInt(): Int {
+            return scanner.nextInt()
         }
 
-        public int nextInt(int radix) {
-            return scanner.nextInt(radix);
+        fun nextInt(radix: Int): Int {
+            return scanner.nextInt(radix)
         }
 
-        public boolean hasNextLong() {
-            return scanner.hasNextLong();
+        fun hasNextLong(): Boolean {
+            return scanner.hasNextLong()
         }
 
-        public boolean hasNextLong(int radix) {
-            return scanner.hasNextLong(radix);
+        fun hasNextLong(radix: Int): Boolean {
+            return scanner.hasNextLong(radix)
         }
 
-        public long nextLong() {
-            return scanner.nextLong();
+        fun nextLong(): Long {
+            return scanner.nextLong()
         }
 
-        public long nextLong(int radix) {
-            return scanner.nextLong(radix);
+        fun nextLong(radix: Int): Long {
+            return scanner.nextLong(radix)
         }
 
-        public boolean hasNextFloat() {
-            return scanner.hasNextFloat();
+        fun hasNextFloat(): Boolean {
+            return scanner.hasNextFloat()
         }
 
-        public float nextFloat() {
-            return scanner.nextFloat();
+        fun nextFloat(): Float {
+            return scanner.nextFloat()
         }
 
-        public boolean hasNextDouble() {
-            return scanner.hasNextDouble();
+        fun hasNextDouble(): Boolean {
+            return scanner.hasNextDouble()
         }
 
-        public double nextDouble() {
-            return scanner.nextDouble();
+        fun nextDouble(): Double {
+            return scanner.nextDouble()
         }
 
-        public boolean hasNextBigInteger() {
-            return scanner.hasNextBigInteger();
+        fun hasNextBigInteger(): Boolean {
+            return scanner.hasNextBigInteger()
         }
 
-        public boolean hasNextBigInteger(int radix) {
-            return scanner.hasNextBigInteger(radix);
+        fun hasNextBigInteger(radix: Int): Boolean {
+            return scanner.hasNextBigInteger(radix)
         }
 
-        public BigInteger nextBigInteger() {
-            return scanner.nextBigInteger();
+        fun nextBigInteger(): BigInteger {
+            return scanner.nextBigInteger()
         }
 
-        public BigInteger nextBigInteger(int radix) {
-            return scanner.nextBigInteger(radix);
+        fun nextBigInteger(radix: Int): BigInteger {
+            return scanner.nextBigInteger(radix)
         }
 
-        public boolean hasNextBigDecimal() {
-            return scanner.hasNextBigDecimal();
+        fun hasNextBigDecimal(): Boolean {
+            return scanner.hasNextBigDecimal()
         }
 
-        public BigDecimal nextBigDecimal() {
-            return scanner.nextBigDecimal();
+        fun nextBigDecimal(): BigDecimal {
+            return scanner.nextBigDecimal()
         }
 
-        public Scanner reset() {
-            return scanner.reset();
+        fun reset(): Scanner {
+            return scanner.reset()
         }
 
-        public void forEachRemaining(Consumer<? super String> action) {
-            scanner.forEachRemaining(action);
+        fun forEachRemaining(action: Consumer<in String?>) {
+            scanner.forEachRemaining(action)
         }
     }
 
-
-
-    public static class BiKeyMap<K, V> {
-        Map<K, Map<K, V>> map = new HashMap<>();
-
-        public BiKeyMap() {
-
+    class BiKeyMap<K, V> {
+        var map: MutableMap<K, MutableMap<K, V>> = HashMap()
+        operator fun get(key1: K, key2: K): V? {
+            val map2: Map<K, V>? = map[key1]
+            return map2?.get(key2)
         }
 
-        public V get(K key1, K key2) {
-            Map<K, V> map2 = map.get(key1);
-            return map2 != null ? map2.get(key2) : null;
+        fun get1(key1: K): Collection<V> {
+            return map[key1]!!.values
         }
 
-        public Collection<V> get1(K key1) {
-            return map.get(key1).values();
-
+        fun get2(key2: K): List<V?> {
+            return map.values.stream().map { m2: Map<K, V> -> m2[key2] }.collect(Collectors.toList())
         }
 
-        public Collection<V> get2(K key2) {
-            return map.values().stream().map(m2 -> m2.get(key2)).collect(Collectors.toList());
-        }
-
-        public V put(K key1, K key2, V value) {
-            Map<K, V> map2 = map.get(key1);
+        fun put(key1: K, key2: K, value: V): V? {
+            var map2 = map[key1]
             if (map2 == null) {
-                map2 = new HashMap<>();
-                map.put(key1, map2);
+                map2 = HashMap()
+                map[key1] = map2
             }
-            return map2.put(key2, value);
+            return map2.put(key2, value)
         }
 
-
-        public V remove(K key1, K key2) {
-            Map<K, V> map2 = map.get(key1);
+        fun remove(key1: K, key2: K): V? {
+            var map2 = map[key1]
             if (map2 == null) {
-                map2 = new HashMap<>();
-                map.put(key1, map2);
+                map2 = HashMap()
+                map[key1] = map2
             }
-            return map2.remove(key2);
+            return map2.remove(key2)
         }
 
-        public Collection<V> values() {
-            return map.values().stream().flatMap((Map<K, V> m2) -> m2.values().stream()).filter(i -> i != null).collect(Collectors.toList());
+        fun values(): Collection<V> {
+            return map.values.stream().flatMap { m2: Map<K, V> -> m2.values.stream() }.filter { i: V? -> i != null }.collect(Collectors.toList())
         }
     }
+}
 
+fun main(argv: Array<String>) {
+    val sc = Scanner(System.`in`)
+    println("rrr")
+    IsoContest().mainContent(sc)
 }

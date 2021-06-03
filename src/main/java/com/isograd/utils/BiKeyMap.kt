@@ -1,48 +1,47 @@
-package com.isograd.utils;
+package com.isograd.utils
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.HashMap
+import java.util.function.BiFunction
+import java.util.stream.Collectors
+import java.util.Arrays
+import java.io.IOException
+import java.util.Locale
+import java.math.BigInteger
+import java.math.BigDecimal
+import kotlin.Throws
+import kotlin.jvm.JvmStatic
+import java.io.PrintStream
 
-public class BiKeyMap<K, V> {
-    Map<K, Map<K, V>> map = new HashMap<>();
-
-    public BiKeyMap() {
-
+class BiKeyMap<K, V> {
+    var map: MutableMap<K, MutableMap<K, V>> = HashMap()
+    operator fun get(key1: K, key2: K): V? {
+        val map2: Map<K, V>? = map[key1]
+        return map2?.get(key2)
     }
 
-    public V get(K key1, K key2) {
-        Map<K, V> map2 = map.get(key1);
-        return map2 != null ? map2.get(key2) : null;
+    fun get1(key1: K): Collection<V> {
+        return map[key1]!!.values
     }
 
-    public Collection<V> get1(K key1) {
-        return map.get(key1).values();
-
+    fun get2(key2: K): Collection<V?> {
+        return map.values.stream().map { m2: Map<K, V> -> m2[key2] }.collect(Collectors.toList())
     }
 
-    public Collection<V> get2(K key2) {
-        return map.values().stream().map(m2 -> m2.get(key2)).collect(Collectors.toList());
-    }
-
-    public V put(K key1, K key2, V value) {
-        Map<K, V> map2 = map.get(key1);
+    fun put(key1: K, key2: K, value: V): V? {
+        var map2 = map[key1]
         if (map2 == null) {
-            map2 = new HashMap<>();
-            map.put(key1, map2);
+            map2 = HashMap()
+            map[key1] = map2
         }
-        return map2.put(key2, value);
+        return map2.put(key2, value)
     }
 
-
-    public V remove(K key1, K key2) {
-        Map<K, V> map2 = map.get(key1);
+    fun remove(key1: K, key2: K): V? {
+        var map2 = map[key1]
         if (map2 == null) {
-            map2 = new HashMap<>();
-            map.put(key1, map2);
+            map2 = HashMap()
+            map[key1] = map2
         }
-        return map2.remove(key2);
+        return map2.remove(key2)
     }
-
 }
